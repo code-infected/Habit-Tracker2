@@ -1,9 +1,16 @@
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const AddHabitDialog = ({ open, onOpenChange, onAddHabit }) => {
   const [title, setTitle] = useState("");
+
+  // Reset title when dialog opens
+  useEffect(() => {
+    if (open) {
+      setTitle("");
+    }
+  }, [open]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,6 +19,10 @@ const AddHabitDialog = ({ open, onOpenChange, onAddHabit }) => {
       setTitle("");
       onOpenChange(false);
     }
+  };
+
+  const handleInputChange = (e) => {
+    setTitle(e.target.value);
   };
 
   return (
@@ -27,19 +38,20 @@ const AddHabitDialog = ({ open, onOpenChange, onAddHabit }) => {
             </label>
             <Input
               id="title"
+              type="text"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Enter habit name..."
+              onChange={handleInputChange}
+              className="w-full"
+              placeholder="Enter habit name"
+              autoFocus
             />
           </div>
-          <div className="flex justify-end">
-            <button
-              type="submit"
-              className="bg-habit-primary text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-colors"
-            >
-              Add Habit
-            </button>
-          </div>
+          <button
+            type="submit"
+            className="w-full px-4 py-2 text-white bg-blue-600 rounded hover:bg-blue-700"
+          >
+            Add Habit
+          </button>
         </form>
       </DialogContent>
     </Dialog>
